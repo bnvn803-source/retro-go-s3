@@ -1,0 +1,10 @@
+.DS_Store
+.vscode/
+build/
+*.exe
+sdkconfig.old
+sdkconfig
+/*.fw
+/*.img
+/*.zip
+__pycache__/

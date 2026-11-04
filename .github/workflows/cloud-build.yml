@@ -1,0 +1,29 @@
+name: Retro-Go ESP32-S3 Cloud Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: espressif/idf:v4.3.3
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Build firmware image
+        shell: bash
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          . "$IDF_PATH/export.sh"
+          python3 rg_tool.py --target=esp32-s3-devkit --idf-target=esp32s3 --with-networking release
+
+      - name: Upload firmware image
+        uses: actions/upload-artifact@v4
+        with:
+          name: Retro-Go-ESP32-S3
+          path: '*.img'
+          if-no-files-found: error
